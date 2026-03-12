@@ -28,7 +28,7 @@ namespace blogsite.Pages.Posts
                 return NotFound();
             }
 
-            var post = await _context.Post.FirstOrDefaultAsync(m => m.Id == id);
+            var post = await _context.Posts.FirstOrDefaultAsync(m => m.Id == id);
 
             if (post is not null)
             {

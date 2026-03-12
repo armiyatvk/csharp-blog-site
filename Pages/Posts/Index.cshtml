@@ -5,11 +5,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>My Posts</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+@foreach(var post in Model.Post){
+    <p>@post.Title</p>
+}
+
+
 <table class="table">
     <thead>
         <tr>
