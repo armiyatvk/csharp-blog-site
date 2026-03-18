@@ -20,6 +20,7 @@ namespace blogsite.Pages.Posts
         }
 
         public Post Post { get; set; } = default!;
+        public List<Post> RelatedPosts { get; set; } = new();
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,11 +29,18 @@ namespace blogsite.Pages.Posts
                 return NotFound();
             }
 
-            var post = await _context.Posts.FirstOrDefaultAsync(m => m.Id == id);
+            var post = await _context.Posts
+                .Include(p => p.Author)
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (post is not null)
             {
                 Post = post;
+
+                RelatedPosts = await _context.Posts
+                    .Where(p => p.CategoryId == post.CategoryId && p.Id != post.Id)
+                    .ToListAsync();
 
                 return Page();
             }
